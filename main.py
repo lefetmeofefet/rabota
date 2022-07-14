@@ -15,7 +15,7 @@ while len(window) == 0 or not window[0].isActive:
     time.sleep(0.5)
 window = window[0]
 
-
+# Moves to center of the notepad and types some texts
 pyautogui.moveTo(window.centerx, window.centery)
 time.sleep(0.5)
 pyautogui.click()
