@@ -22,3 +22,21 @@ pyautogui.click()
 time.sleep(0.5)
 pyautogui.typewrite("I AM TEXT BITCH")
 
+# Now open calculator
+pyautogui.keyDown('winleft')
+pyautogui.press('r')
+pyautogui.keyUp('winleft')
+time.sleep(0.1)
+pyautogui.typewrite("calc")
+time.sleep(0.1)
+pyautogui.press("enter")
+
+time.sleep(3)
+
+# Screenshot
+six = pyautogui.locateCenterOnScreen("six.png")
+pyautogui.moveTo(six.x, six.y)
+time.sleep(0.5)
+pyautogui.click()
+pyautogui.click()
+pyautogui.click()
