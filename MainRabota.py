@@ -3,10 +3,11 @@ import pyautogui
 import time
 import socket
 
-
 computer_name = socket.gethostname()
+print(computer_name)
 images_folder = {
     "Rambo": "images/darvid/",
+    "DESKTOP-N349C6N": "images/shlombif/",
     # SHLORMO and YOTAM add yours
 }[computer_name]
 

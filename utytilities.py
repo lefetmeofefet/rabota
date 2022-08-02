@@ -11,6 +11,7 @@ def random_range(minimum, maximum):
     return num1
 
 
+
 def write_text(text):
     for letter in text:
         pyautogui.typewrite(letter, _pause=False)
