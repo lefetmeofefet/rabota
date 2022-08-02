@@ -1,6 +1,14 @@
 import utytilities
 import pyautogui
 import time
+import socket
+
+
+computer_name = socket.gethostname()
+images_folder = {
+    "Rambo": "images/darvid/",
+    # SHLORMO and YOTAM add yours
+}[computer_name]
 
 
 def enter_game():
@@ -11,12 +19,12 @@ def enter_game():
         time.sleep(0.5)
     window = window[0]
 
-    create_button_pressed = pyautogui.locateCenterOnScreen("create_pressed.png", )
+    create_button_pressed = pyautogui.locateCenterOnScreen(images_folder + "create_pressed.png")
     if create_button_pressed is not None:
         create_window = True
 
     while not create_window:
-        creat_button_unpressed = pyautogui.locateCenterOnScreen("create_unpressed.png", confidence=0.5)
+        creat_button_unpressed = pyautogui.locateCenterOnScreen(images_folder + "create_unpressed.png", confidence=0.5)
         if creat_button_unpressed is not None:
             utytilities.move_mouse(creat_button_unpressed.x, creat_button_unpressed.y)
             time.sleep(0.2)
