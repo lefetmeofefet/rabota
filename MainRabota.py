@@ -3,28 +3,37 @@ import math
 import random
 import pyautogui
 
-def random_range(min, max):
+
+def random_range(minimum, maximum):
     num1 = random.random()
-    num1 += min
-    num1 *= (max - min)
+    num1 += minimum
+    num1 *= (maximum - minimum)
     return num1
+
+
+MIN_WRITE_DELAY = 0.1
+MAX_WRITE_DELAY = 0.6
+
+
+def write_text(text):
+    for letter in text:
+        pyautogui.typewrite(letter, _pause=False)
+        time_to_sleep = random_range(MIN_WRITE_DELAY, MAX_WRITE_DELAY)
+        time.sleep(time_to_sleep * time_to_sleep)
+
 
 def distance(x1, y1, x2, y2):
     return math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2))
 
-screen_size_x, screen_size_y = pyautogui.size()
 
-# moves the mouse from where it is to Destination
-# gets: the destination x and destination y
-# returns: nothing
-
+SCREEN_SIZE_X, SCREEN_SIZE_Y = pyautogui.size()
 ARRIVAL_DISTANCE = 10
-ANGLE_MAX_ERROR = 0.5
+ANGLE_MAX_ERROR = 0.4
 ANGLE_OVERALL_CURVE = 0.15
-MOUSE_SPEED_RANDOM_MIN = screen_size_x * 0.005
-MOUSE_SPEED_RANDOM_MAX = screen_size_x * 0.006
-MOUSE_SPEED_ACCELERATION = screen_size_x * 0.0005
-MOUSE_SPEED_MIN = screen_size_x * 0.00125
+MOUSE_SPEED_RANDOM_MIN = SCREEN_SIZE_X * 0.005
+MOUSE_SPEED_RANDOM_MAX = SCREEN_SIZE_X * 0.006
+MOUSE_SPEED_ACCELERATION = SCREEN_SIZE_X * 0.0005
+MOUSE_SPEED_MIN = SCREEN_SIZE_X * 0.00125
 
 
 def mouse(destination_x, destination_y):
