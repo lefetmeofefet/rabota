@@ -11,15 +11,19 @@ def random_range(minimum, maximum):
     return num1
 
 
-MIN_WRITE_DELAY = 0.1
-MAX_WRITE_DELAY = 0.6
-
 
 def write_text(text):
     for letter in text:
         pyautogui.typewrite(letter, _pause=False)
-        time_to_sleep = random_range(MIN_WRITE_DELAY, MAX_WRITE_DELAY)
+        time_to_sleep = random_range(0.1, 0.6)
         time.sleep(time_to_sleep * time_to_sleep)
+
+
+def mouse_click(is_right_click=False):
+    time_to_sleep = random_range(0.05, 0.2)
+    pyautogui.mouseDown(_pause=False, button=pyautogui.SECONDARY if is_right_click else pyautogui.PRIMARY)
+    time.sleep(time_to_sleep)
+    pyautogui.mouseUp(_pause=False, button=pyautogui.SECONDARY if is_right_click else pyautogui.PRIMARY)
 
 
 def distance(x1, y1, x2, y2):
