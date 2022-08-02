@@ -3,6 +3,7 @@ import time
 import pyautogui
 
 print("lefet")
+print("lefet")
 
 # Screen size
 print(pyautogui.size())
