@@ -5,8 +5,8 @@ import pyautogui
 
 def random_range(min, max):
     num1 = random.random()
-    num1 *= max
     num1 += min
+    num1 *= (max - min)
     return num1
 
 def distance(x1, y1, x2, y2):
@@ -21,9 +21,9 @@ screen_size_x, screen_size_y = pyautogui.size()
 ARRIVAL_DISTANCE = 10
 ANGLE_MAX_ERROR = 0.5
 ANGLE_OVERALL_CURVE = 0.15
-MOUSE_SPEED_RANDOM_MIN = screen_size_x * 0.02
-MOUSE_SPEED_RANDOM_MAX = screen_size_x * 0.025
-MOUSE_SPEED_ACCELERATION = screen_size_x * 0.001
+MOUSE_SPEED_RANDOM_MIN = screen_size_x * 0.005
+MOUSE_SPEED_RANDOM_MAX = screen_size_x * 0.006
+MOUSE_SPEED_ACCELERATION = screen_size_x * 0.0005
 MOUSE_SPEED_MIN = screen_size_x * 0.00125
 
 
@@ -36,7 +36,7 @@ def mouse(destination_x, destination_y):
     while x != destination_x and y != destination_y:
         angle = math.atan2(destination_x - x, destination_y - y) # angle randomizing:
         angle_random = random_range(-ANGLE_MAX_ERROR, ANGLE_MAX_ERROR)
-        angle = angle + angle_random + angle_curve
+        angle += angle_random + angle_curve
 
         if mouse_speed_min > MOUSE_SPEED_MIN:
             if distance(x, y, x_start, y_start) < distance(x, y, destination_x, destination_y):
