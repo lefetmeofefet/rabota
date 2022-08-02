@@ -37,7 +37,7 @@ pyautogui.press("enter")
 time.sleep(3)
 
 # Screenshot
-six = pyautogui.locateCenterOnScreen("six.png")
+six = pyautogui.locateCenterOnScreen("sex.png",)
 pyautogui.moveTo(six.x, six.y)
 time.sleep(0.5)
 pyautogui.click()
