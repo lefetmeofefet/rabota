@@ -67,3 +67,26 @@ def move_mouse(destination_x, destination_y):
 
         mouse_pause = random_range(0.005, 0.02)
         time.sleep(mouse_pause)
+
+def enter_game():
+    create_window = False
+    window = []
+    while len(window) == 0 or not window[0].isActive:
+        window = pyautogui.getWindowsWithTitle('Diablo II: Resurrected')
+        time.sleep(0.5)
+    window = window[0]
+
+    creat_button_pressed = pyautogui.locateCenterOnScreen("create_pressed.png", )
+    if creat_button_pressed is not None:
+        create_window = True
+
+    while not create_window:
+        creat_button_unpressed = pyautogui.locateCenterOnScreen("create_unpressed.png",)
+        if creat_button_unpressed is not None:
+            move_mouse(creat_button_unpressed.x, creat_button_unpressed.y)
+            time.sleep(0.2)
+            pyautogui.click()
+            create_window = True
+        time.sleep(0.5)
+
+
