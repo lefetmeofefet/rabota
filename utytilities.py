@@ -3,7 +3,7 @@ import math
 import random
 import pyautogui
 
-COUNTESS_NAMES = ["coutess", "count", "county", "countnumber", "countrun"]
+COUNTESS_NAMES = ["countess", "count", "county", "countnum", "countrun"]
 COUNTESS_MIN_RUNS = 10
 COUNTESS_MAX_RUNS = 20
 
@@ -39,9 +39,19 @@ def random_range(minimum, maximum):
     return num1
 
 
+def backspace(num):
+    for i in range(num):
+        pyautogui.keyDown('backspace', _pause=False)
+        time.sleep(0.03)
+        pyautogui.keyUp('backspace', _pause=False)
+        time.sleep(0.02)
+
+
 def write_text(text):
     for letter in text:
-        pyautogui.typewrite(letter, _pause=False)
+        pyautogui.keyDown(letter, _pause=False)
+        time.sleep(0.02)
+        pyautogui.keyUp(letter, _pause=False)
         time_to_sleep = random_range(0.1, 0.6)
         time.sleep(time_to_sleep * time_to_sleep)
 
