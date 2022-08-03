@@ -36,8 +36,7 @@ def enter_game():
         time.sleep(0.4)
 
 
-
 print()
-tower_entrace = pyautogui.locateCenterOnScreen(images_folder + "tower_entrace.png", confidence = 0.8)
+tower_entrace = pyautogui.locateCenterOnScreen(images_folder + "tower_entrance.png", confidence = 0.9)
 utytilities.move_mouse(tower_entrace.x, tower_entrace.y)
-# enter_game()
+#enter_game()
