@@ -42,15 +42,15 @@ def random_range(minimum, maximum):
 def backspace(num):
     for i in range(num):
         pyautogui.keyDown('backspace', _pause=False)
-        time.sleep(0.03)
+        time.sleep(random_range(0.1, 0.6))
         pyautogui.keyUp('backspace', _pause=False)
-        time.sleep(0.02)
+        time.sleep(random_range(0.1, 0.4))
 
 
 def write_text(text):
     for letter in text:
         pyautogui.keyDown(letter, _pause=False)
-        time.sleep(0.02)
+        time.sleep(random_range(0.1, 0.6))
         pyautogui.keyUp(letter, _pause=False)
         time_to_sleep = random_range(0.1, 0.6)
         time.sleep(time_to_sleep * time_to_sleep)

@@ -35,11 +35,11 @@ def enter_game():
                 create_window = True
         time.sleep(0.4)
 
-    #write the game name:
+    #write the game name:z
     game_name = pyautogui.locateCenterOnScreen(images_folder + "game_name.png")
     utytilities.move_mouse(game_name.x + utytilities.random_range(-2, 6), game_name.y + 25 * utytilities.MOUSE_SPEED_ACCELERATION)
     utytilities.mouse_click()
-    utytilities.backspace(10)
+    utytilities.backspace(utytilities.random_range(10, 13))
     utytilities.mouse_click(utytilities.write_text(utytilities.create_run_name()))
 
     #add password if we want!!
