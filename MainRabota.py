@@ -35,8 +35,9 @@ def enter_game():
                 create_window = True
         time.sleep(0.4)
 
+for i in range(100):
+    print(utytilities.create_run_name())
 
-print()
-tower_entrace = pyautogui.locateCenterOnScreen(images_folder + "tower_entrance.png", confidence = 0.9)
-utytilities.move_mouse(tower_entrace.x, tower_entrace.y)
+# tower_entrance = pyautogui.locateCenterOnScreen(images_folder + "tower_entrance.png", confidence = 0.9)
+# utytilities.move_mouse(tower_entrance.x, tower_entrance.y)
 #enter_game()

@@ -11,21 +11,32 @@ class count_run:
     count_num = 1
     count_name = 0
 
-# def create_run_name():
-#     count_num = count_run.count_num
-#     count_name = COUNTESS_NAMES[count_run.count_name]
-#     run_name = count_name + str(count_num)
-#
-#     if
-#     count_run.count_num += 1
-#     return run_name
+def create_run_name():
+    count_num = count_run.count_num
+    count_name = COUNTESS_NAMES[count_run.count_name]
+    run_name = count_name + str(count_num)
+
+    if count_num == COUNTESS_MAX_RUNS:
+        count_run.count_num = 1
+        temp_num = count_run.count_name
+        while temp_num == count_run.count_name:
+            count_run.count_name = int(random_range(0, 4))
+    elif count_num >= COUNTESS_MIN_RUNS and int(random_range(1, 10)) == 10:
+        count_run.count_num = 1
+        temp_num = count_run.count_name
+        while temp_num == count_run.count_name:
+            count_run.count_name = int(random_range(0, 4))
+    else:
+        count_run.count_num += 1
+
+    return run_name
+
 
 def random_range(minimum, maximum):
     num1 = random.random()
     num1 += minimum
     num1 *= (maximum - minimum)
     return num1
-
 
 
 def write_text(text):
