@@ -3,6 +3,22 @@ import math
 import random
 import pyautogui
 
+COUNTESS_NAMES = ["coutess", "count", "county", "countnumber", "countrun"]
+COUNTESS_MIN_RUNS = 10
+COUNTESS_MAX_RUNS = 20
+
+class count_run:
+    count_num = 1
+    count_name = 0
+
+# def create_run_name():
+#     count_num = count_run.count_num
+#     count_name = COUNTESS_NAMES[count_run.count_name]
+#     run_name = count_name + str(count_num)
+#
+#     if
+#     count_run.count_num += 1
+#     return run_name
 
 def random_range(minimum, maximum):
     num1 = random.random()
