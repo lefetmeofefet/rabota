@@ -37,8 +37,8 @@ def get_castle_entrance_mask(frame, tolerance):
     return purple_mask
 
 
-def get_castle_entrance_position(frame):
-    purple_mask = get_castle_entrance_mask(frame)
+def get_castle_entrance_position(frame, tolerance):
+    purple_mask = get_castle_entrance_mask(frame, tolerance)
     entrances, _ = cv2.findContours(
         purple_mask, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
 
@@ -58,5 +58,9 @@ with mss.mss() as sct:
     screen = np.array(sct.grab(monitor))
     screen = cv2.cvtColor(screen, cv2.COLOR_RGBA2RGB)
     entrance = get_castle_entrance_mask(screen, 10)
-    cv2.imshow('entrance', entrance)
+
+    psoition = get_castle_entrance_position(screen, 10)
+    qwer = cv2.drawContours(screen, [psoition], -1, (0, 255, 0), 2)
+
+    cv2.imshow('entrance', qwer)
     cv2.waitKey(0)
