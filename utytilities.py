@@ -32,6 +32,16 @@ def create_run_name():
     return run_name
 
 
+#waits until finds the picture and returns cords
+def wait_until_found(name):
+    image_name = None
+    while image_name is None:
+        image_name = pyautogui.locateCenterOnScreen(name, confidence=0.9)
+        if image_name is not None:
+            return image_name
+        time.sleep(0.5)
+
+
 def random_range(minimum, maximum):
     num1 = random.random()
     num1 += minimum
@@ -42,17 +52,17 @@ def random_range(minimum, maximum):
 def backspace(num):
     for i in range(num):
         pyautogui.keyDown('backspace', _pause=False)
-        time.sleep(random_range(0.1, 0.6))
+        time.sleep(random_range(0.05, 0.2))
         pyautogui.keyUp('backspace', _pause=False)
-        time.sleep(random_range(0.1, 0.4))
+        time.sleep(random_range(0.05, 0.2))
 
 
 def write_text(text):
     for letter in text:
         pyautogui.keyDown(letter, _pause=False)
-        time.sleep(random_range(0.1, 0.6))
+        time.sleep(random_range(0.1, 0.4))
         pyautogui.keyUp(letter, _pause=False)
-        time_to_sleep = random_range(0.1, 0.6)
+        time_to_sleep = random_range(0.1, 0.3)
         time.sleep(time_to_sleep * time_to_sleep)
 
 

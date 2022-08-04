@@ -43,13 +43,26 @@ def enter_game():
     utytilities.mouse_click(utytilities.write_text(utytilities.create_run_name()))
 
     #add password if we want!!
+    # add password if we want!!
+    # add password if we want!!
 
     create_game_button = pyautogui.locateCenterOnScreen(images_folder + "create_game_button.png")
     utytilities.move_mouse(create_game_button.x, create_game_button.y)
+    utytilities.mouse_click()
+
+def city():
+    new_graphic_barrel = utytilities.wait_until_found(images_folder + "new_graphic_barrel.png")
+    utytilities.write_text('g')  # old graphics
+
+    city_chest = utytilities.wait_until_found(images_folder + "city_chest.png")
+    utytilities.move_mouse(city_chest.x, city_chest.y)
     utytilities.mouse_click()
 # for i in range(100):
 #     print(utytilities.create_run_name())
 
 # tower_entrance = pyautogui.locateCenterOnScreen(images_folder + "tower_entrance.png", confidence = 0.9)
 # utytilities.move_mouse(tower_entrance.x, tower_entrance.y)
+
+
 enter_game()
+city()
