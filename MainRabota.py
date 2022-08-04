@@ -29,6 +29,7 @@ def enter_game():
         utytilities.move_mouse(create_button_unpressed.x, create_button_unpressed.y)
         time.sleep(0.2)
         utytilities.mouse_click()
+        create_window = True
 
     #write the game name: (starts with countess1 always)
     game_name = utytilities.wait_until_found(images_folder + "game_name.png")
