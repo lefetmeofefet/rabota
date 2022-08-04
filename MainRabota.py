@@ -20,10 +20,7 @@ def enter_game():
         time.sleep(0.5)
     window = window[0]
 
-    create_button_pressed = pyautogui.locateCenterOnScreen(images_folder + "create_pressed.png")
-    if create_button_pressed is not None:
-        create_window = True
-
+    print("Waiting for create game menu")
     while not create_window:
         create_button_unpressed = pyautogui.locateCenterOnScreen(images_folder + "create_unpressed.png",)
         if create_button_unpressed is not None:
@@ -32,6 +29,7 @@ def enter_game():
             utytilities.mouse_click()
             create_button_pressed = pyautogui.locateCenterOnScreen(images_folder + "create_pressed.png")
             if create_button_pressed is not None:
+                # TODO: WHEN we cant find the pressed button, means we have a bug, and we have to log it and exist the bot
                 create_window = True
         time.sleep(0.4)
 
@@ -46,7 +44,9 @@ def enter_game():
     # add password if we want!!
     # add password if we want!!
 
+
     create_game_button = pyautogui.locateCenterOnScreen(images_folder + "create_game_button.png")
+    print("Create game button: " + str(create_game_button))
     utytilities.move_mouse(create_game_button.x, create_game_button.y)
     utytilities.mouse_click()
 
