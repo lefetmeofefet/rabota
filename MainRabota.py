@@ -39,10 +39,19 @@ def city():
     utytilities.wait_until_found("new_graphic_barrel.png", confidence=0.9)
     utytilities.write_text('g')  # old graphics
 
+    utytilities.write_text('z')
+    time.sleep(0.2)
+    utytilities.mouse_click(is_right_click=True)
+    time.sleep(0.2)
+    utytilities.write_text('x')
+    time.sleep(0.2)
+    utytilities.mouse_click(is_right_click=True)
+    time.sleep(0.2)
+    utytilities.write_text('e')
+
     city_chest = utytilities.wait_until_found("city_chest.png", confidence=0.9)
     utytilities.move_mouse(city_chest.x, city_chest.y)
     utytilities.mouse_click()
-    time.sleep(2)
 
     pyautogui.keyDown('esc')
     time.sleep(0.2)
@@ -69,18 +78,27 @@ def go_to_portal():
     # centery = count_run.window.top + (count_run.window.height - count_run.toolbar_height) / 2 + count_run.toolbar_height
     utytilities.move_mouse(wp_minimap.x, wp_minimap.y)
     utytilities.mouse_down()
-    time.sleep(1 + random.random() * 0.1)
+    time.sleep(2 + random.random() * 0.1)
     utytilities.mouse_up()
-    time.sleep(5 + random.random() * 0.1)  # Important cause he keeps running a bit after the mouse is release
+    time.sleep(1 + random.random() * 0.1)  # Important cause he keeps running a bit after the mouse is release
+
+    pyautogui.keyDown('tab')
+    time.sleep(0.2)
+    pyautogui.keyUp('tab')
+
     utytilities.find_and_click("wp.png", confidence=0.9)
     time.sleep(0.5 + random.random() * 0.1)
     utytilities.find_and_click("black_marsh_wp.png", confidence=0.9)
+
+    pyautogui.keyDown('tab')
+    time.sleep(0.2)
+    pyautogui.keyUp('tab')
 
 
 count_run = utytilities.count_run
 count_run.wait_for_diablo_window()
 
-#enter_game()
+enter_game()
 city()
 go_to_portal()
 
