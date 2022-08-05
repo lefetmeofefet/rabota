@@ -1,3 +1,5 @@
+import random
+
 import utytilities
 import pyautogui
 import time
@@ -31,7 +33,7 @@ def enter_game():
                            game_name.y + 25 * utytilities.MOUSE_SPEED_ACCELERATION)
     utytilities.mouse_click()
     utytilities.backspace(10)
-    utytilities.write_text(utytilities.get_game_name())
+    utytilities.write_text(utytilities.count_run.generate_game_name())
 
     # add password if we want!!
     # add password if we want!!
@@ -57,6 +59,27 @@ def city():
 # tower_entrance = pyautogui.locateCenterOnScreen(images_folder + "tower_entrance.png", confidence = 0.9)
 # utytilities.move_mouse(tower_entrance.x, tower_entrance.y)
 
+def go_to_portal():
+    wp_minimap = utytilities.find_wp_on_minimap()
+    if wp_minimap is None:
+        raise Exception("Shet no wp now we die")
+    # centerx = count_run.window.left + count_run.window.width / 2
+    # centery = count_run.window.top + (count_run.window.height - count_run.toolbar_height) / 2 + count_run.toolbar_height
+    utytilities.move_mouse(wp_minimap.x, wp_minimap.y)
+    utytilities.mouse_down()
+    time.sleep(1 + random.random() * 0.1)
+    utytilities.mouse_up()
+    time.sleep(5 + random.random() * 0.1)  # Important cause he keeps running a bit after the mouse is release
+    utytilities.find_and_click(images_folder + "wp.png", confidence=0.9)
+    time.sleep(0.5 + random.random() * 0.1)
+    utytilities.find_and_click(images_folder + "black_marsh_wp.png", confidence=0.9)
 
-enter_game()
-city()
+
+
+count_run = utytilities.count_run
+count_run.wait_for_diablo_window()
+print("goifn to portal")
+go_to_portal()
+
+# enter_game()
+# city()

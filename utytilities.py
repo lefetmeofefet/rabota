@@ -8,40 +8,72 @@ COUNTESS_MIN_RUNS = 10
 COUNTESS_MAX_RUNS = 20
 
 
-class count_run:
+SCREEN_SIZE_X, SCREEN_SIZE_Y = pyautogui.size()
+ARRIVAL_DISTANCE = 10
+ANGLE_MAX_ERROR = 0.4
+ANGLE_OVERALL_CURVE = 0.15
+MOUSE_SPEED_RANDOM_MIN = SCREEN_SIZE_X * 0.005
+MOUSE_SPEED_RANDOM_MAX = SCREEN_SIZE_X * 0.006
+MOUSE_SPEED_ACCELERATION = SCREEN_SIZE_X * 0.0005
+MOUSE_SPEED_MIN = SCREEN_SIZE_X * 0.00125
+
+
+class CountRun:
     count_num = 1
     count_name = 0
+    toolbar_height = 38
+
+    def __init__(self):
+        """
+        :type pyautogui.Win32Window
+        """
+        self.window = None
+
+    def wait_for_diablo_window(self):
+        window = []
+        while len(window) == 0 or not window[0].isActive:
+            window = pyautogui.getWindowsWithTitle('Diablo II: Resurrected')
+            time.sleep(0.5)
+        self.window = window[0]
+
+    def generate_game_name(self):
+        count_num = self.count_num
+        count_name = COUNTESS_NAMES[self.count_name]
+        run_name = count_name + str(count_num)
+
+        if count_num == COUNTESS_MAX_RUNS:
+            self.count_num = 1
+            temp_num = self.count_name
+            while temp_num == self.count_name:
+                self.count_name = int(random_range(0, 4))
+        elif count_num >= COUNTESS_MIN_RUNS and int(random_range(1, 10)) == 10:
+            self.count_num = 1
+            temp_num = self.count_name
+            while temp_num == self.count_name:
+                self.count_name = int(random_range(0, 4))
+        else:
+            self.count_num += 1
+
+        return run_name
 
 
-def get_game_name():
-    count_num = count_run.count_num
-    count_name = COUNTESS_NAMES[count_run.count_name]
-    run_name = count_name + str(count_num)
-
-    if count_num == COUNTESS_MAX_RUNS:
-        count_run.count_num = 1
-        temp_num = count_run.count_name
-        while temp_num == count_run.count_name:
-            count_run.count_name = int(random_range(0, 4))
-    elif count_num >= COUNTESS_MIN_RUNS and int(random_range(1, 10)) == 10:
-        count_run.count_num = 1
-        temp_num = count_run.count_name
-        while temp_num == count_run.count_name:
-            count_run.count_name = int(random_range(0, 4))
-    else:
-        count_run.count_num += 1
-
-    return run_name
+count_run = CountRun()
 
 
-# waits until finds the picture and returns cords
 def wait_until_found(name, confidence=1):
     image_name = None
     while image_name is None:
-        image_name = pyautogui.locateCenterOnScreen(name, confidence)
+        image_name = pyautogui.locateCenterOnScreen(name, confidence=confidence)
         if image_name is not None:
             return image_name
         time.sleep(0.5)
+
+
+def find_and_click(image_path, confidence=1):
+    wp = wait_until_found(image_path, confidence)
+    move_mouse(wp.x, wp.y)
+    time.sleep(0.2 + random.random() * 0.1)
+    mouse_click()
 
 
 def random_range(minimum, maximum):
@@ -75,30 +107,16 @@ def mouse_click(is_right_click=False):
     pyautogui.mouseUp(_pause=False, button=pyautogui.SECONDARY if is_right_click else pyautogui.PRIMARY)
 
 
+def mouse_down(is_right_click=False):
+    pyautogui.mouseDown(_pause=False, button=pyautogui.SECONDARY if is_right_click else pyautogui.PRIMARY)
+
+
+def mouse_up(is_right_click=False):
+    pyautogui.mouseUp(_pause=False, button=pyautogui.SECONDARY if is_right_click else pyautogui.PRIMARY)
+
+
 def distance(x1, y1, x2, y2):
     return math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2))
-
-
-def wait_for_create_game_menu():
-    window = []
-    while len(window) == 0 or not window[0].isActive:
-        window = pyautogui.getWindowsWithTitle('Diablo II: Resurrected')
-        time.sleep(0.5)
-    return window[0]
-
-
-window = wait_for_create_game_menu()
-
-# SCREEN_SIZE_X, SCREEN_SIZE_Y = pyautogui.size()
-SCREEN_SIZE_X = window.width
-SCREEN_SIZE_Y = window.height
-ARRIVAL_DISTANCE = 10
-ANGLE_MAX_ERROR = 0.4
-ANGLE_OVERALL_CURVE = 0.15
-MOUSE_SPEED_RANDOM_MIN = SCREEN_SIZE_X * 0.005
-MOUSE_SPEED_RANDOM_MAX = SCREEN_SIZE_X * 0.006
-MOUSE_SPEED_ACCELERATION = SCREEN_SIZE_X * 0.0005
-MOUSE_SPEED_MIN = SCREEN_SIZE_X * 0.00125
 
 
 def move_mouse(destination_x, destination_y):
@@ -133,3 +151,47 @@ def move_mouse(destination_x, destination_y):
 
         mouse_pause = random_range(0.005, 0.02)
         time.sleep(mouse_pause)
+
+
+class Point:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+
+def find_wp_on_minimap():
+    screenshot = pyautogui.screenshot()
+
+    portal_teal = (178, 235, 255)
+    portal_white = (212, 255, 255)
+    portal_blue = (33, 111, 255)
+    parallel_pixel_distance = 9
+
+    for x in range(screenshot.width - parallel_pixel_distance):
+        for y in range(screenshot.height - 3):
+            current_pixel = screenshot.getpixel((x, y))
+            portal_height = 0
+            if current_pixel == portal_teal:
+                is_portal = True
+                teals_count = 0
+                blues_count = 0
+                whites_count = 0
+                while current_pixel in [portal_blue, portal_teal, portal_white]:
+                    if current_pixel == portal_white:
+                        whites_count += 1
+                    if current_pixel == portal_blue:
+                        blues_count += 1
+                    if current_pixel == portal_teal:
+                        teals_count += 1
+                    portal_height += 1
+                    current_pixel = screenshot.getpixel((x, y + portal_height))
+                if portal_height < 3 or teals_count == 0 or blues_count == 0 or whites_count == 0:
+                    continue
+                for height_index in range(portal_height):
+                    current_pixel = screenshot.getpixel((x, y + height_index))
+                    right_mirror_pixel = screenshot.getpixel((x + parallel_pixel_distance, y + height_index))
+                    if current_pixel != right_mirror_pixel:
+                        is_portal = False
+                        break
+                if is_portal:
+                    return Point(x + parallel_pixel_distance // 2, y + 2)
