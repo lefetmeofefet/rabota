@@ -3,32 +3,24 @@ import random
 import utytilities
 import pyautogui
 import time
-import socket
 
-computer_name = socket.gethostname()
-print(computer_name)
-images_folder = {
-    "Rambo": "images/darvid/",
-    "DESKTOP-N349C6N": "images/shlombif/",
-    # SHLORMO and YOTAM add yours
-}[computer_name]
 
 
 def enter_game():
     create_window = False
-    create_button_pressed = pyautogui.locateCenterOnScreen(images_folder + "create_pressed.png")
+    create_button_pressed = pyautogui.locateCenterOnScreen("create_pressed.png",)
     if create_button_pressed is not None:
         create_window = True
 
     while not create_window:
-        create_button_unpressed = utytilities.wait_until_found(images_folder + "create_unpressed.png", )
+        create_button_unpressed = utytilities.wait_until_found("create_unpressed.png", confidence = 0.9)
         utytilities.move_mouse(create_button_unpressed.x, create_button_unpressed.y)
         time.sleep(0.2)
         utytilities.mouse_click()
         create_window = True
 
     # write the game name: (starts with countess1 always)
-    game_name = utytilities.wait_until_found(images_folder + "game_name.png")
+    game_name = utytilities.wait_until_found("game_name.png", confidence = 0.9)
     utytilities.move_mouse(game_name.x + utytilities.random_range(-2, 6),
                            game_name.y + 25 * utytilities.MOUSE_SPEED_ACCELERATION)
     utytilities.mouse_click()
@@ -39,24 +31,25 @@ def enter_game():
     # add password if we want!!
     # add password if we want!!
 
-    create_game_button = utytilities.wait_until_found(images_folder + "create_game_button.png")
+    create_game_button = utytilities.wait_until_found("create_game_button.png", confidence=0.9)
     utytilities.move_mouse(create_game_button.x, create_game_button.y)
     utytilities.mouse_click()
 
 
 def city():
-    utytilities.wait_until_found(images_folder + "new_graphic_barrel.png", confidence=0.9)
+    utytilities.wait_until_found("new_graphic_barrel.png", confidence=0.9)
     utytilities.write_text('g')  # old graphics
 
-    city_chest = utytilities.wait_until_found(images_folder + "city_chest.png", confidence=0.9)
+    city_chest = utytilities.wait_until_found("city_chest.png", confidence=0.9)
     utytilities.move_mouse(city_chest.x, city_chest.y)
     utytilities.mouse_click()
+    time.sleep(1)
 
 
 # for i in range(100):
 #     print(utytilities.create_run_name())
 
-# tower_entrance = pyautogui.locateCenterOnScreen(images_folder + "tower_entrance.png", confidence = 0.9)
+# tower_entrance = pyautogui.locateCenterOnScreen("tower_entrance.png", confidence = 0.9)
 # utytilities.move_mouse(tower_entrance.x, tower_entrance.y)
 
 def go_to_portal():
@@ -70,9 +63,9 @@ def go_to_portal():
     time.sleep(1 + random.random() * 0.1)
     utytilities.mouse_up()
     time.sleep(5 + random.random() * 0.1)  # Important cause he keeps running a bit after the mouse is release
-    utytilities.find_and_click(images_folder + "wp.png", confidence=0.9)
+    utytilities.find_and_click("wp.png", confidence=0.9)
     time.sleep(0.5 + random.random() * 0.1)
-    utytilities.find_and_click(images_folder + "black_marsh_wp.png", confidence=0.9)
+    utytilities.find_and_click("black_marsh_wp.png", confidence=0.9)
 
 
 
@@ -83,3 +76,6 @@ go_to_portal()
 
 # enter_game()
 # city()
+
+# charsi_name = utytilities.wait_until_found("charsi_name.png", confidence = 0.8)
+# utytilities.mouse_click()

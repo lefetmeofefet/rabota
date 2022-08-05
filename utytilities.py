@@ -3,6 +3,32 @@ import math
 import random
 import pyautogui
 
+import socket
+
+computer_name = socket.gethostname()
+print(computer_name)
+
+
+class Settings:
+    def __init__(self, images_folder, wp_mirror_pixel_distance, window_title_height):
+        self.images_folder = images_folder
+        self.wp_mirror_pixel_distance = wp_mirror_pixel_distance
+        self.window_title_height = window_title_height
+
+
+settings = {
+    "Rambo": Settings(
+        images_folder="images/darvid/",
+        wp_mirror_pixel_distance=9,
+        window_title_height=38
+    ),
+    "DESKTOP-N349C6N": Settings(
+        images_folder = "images/shlombif/",
+        wp_mirror_pixel_distance = 17,
+        window_title_height = 0,
+    ),
+}[computer_name]
+
 COUNTESS_NAMES = ["countess", "count", "county", "countnum", "countrun"]
 COUNTESS_MIN_RUNS = 10
 COUNTESS_MAX_RUNS = 20
@@ -21,12 +47,9 @@ MOUSE_SPEED_MIN = SCREEN_SIZE_X * 0.00125
 class CountRun:
     count_num = 1
     count_name = 0
-    toolbar_height = 38
+    toolbar_height = settings.window_title_height
 
     def __init__(self):
-        """
-        :type pyautogui.Win32Window
-        """
         self.window = None
 
     def wait_for_diablo_window(self):
@@ -60,17 +83,17 @@ class CountRun:
 count_run = CountRun()
 
 
-def wait_until_found(name, confidence=1):
-    image_name = None
-    while image_name is None:
-        image_name = pyautogui.locateCenterOnScreen(name, confidence=confidence)
-        if image_name is not None:
-            return image_name
+def wait_until_found(image_name, confidence=1):
+    image = None
+    while image is None:
+        image = pyautogui.locateCenterOnScreen(settings.images_folder + image_name, confidence=confidence)
+        if image is not None:
+            return image
         time.sleep(0.5)
 
 
-def find_and_click(image_path, confidence=1):
-    wp = wait_until_found(image_path, confidence)
+def find_and_click(image_name, confidence=1):
+    wp = wait_until_found(image_name, confidence)
     move_mouse(wp.x, wp.y)
     time.sleep(0.2 + random.random() * 0.1)
     mouse_click()
@@ -165,7 +188,7 @@ def find_wp_on_minimap():
     portal_teal = (178, 235, 255)
     portal_white = (212, 255, 255)
     portal_blue = (33, 111, 255)
-    parallel_pixel_distance = 9
+    parallel_pixel_distance = settings.wp_mirror_pixel_distance
 
     for x in range(screenshot.width - parallel_pixel_distance):
         for y in range(screenshot.height - 3):
