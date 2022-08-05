@@ -5,22 +5,21 @@ import pyautogui
 import time
 
 
-
 def enter_game():
     create_window = False
-    create_button_pressed = pyautogui.locateCenterOnScreen("create_pressed.png",)
+    create_button_pressed = pyautogui.locateCenterOnScreen(utytilities.settings.images_folder + "create_pressed.png", )
     if create_button_pressed is not None:
         create_window = True
 
     while not create_window:
-        create_button_unpressed = utytilities.wait_until_found("create_unpressed.png", confidence = 0.9)
+        create_button_unpressed = utytilities.wait_until_found("create_unpressed.png", confidence=0.9)
         utytilities.move_mouse(create_button_unpressed.x, create_button_unpressed.y)
         time.sleep(0.2)
         utytilities.mouse_click()
         create_window = True
 
     # write the game name: (starts with countess1 always)
-    game_name = utytilities.wait_until_found("game_name.png", confidence = 0.9)
+    game_name = utytilities.wait_until_found("game_name.png", confidence=0.9)
     utytilities.move_mouse(game_name.x + utytilities.random_range(-2, 6),
                            game_name.y + 25 * utytilities.MOUSE_SPEED_ACCELERATION)
     utytilities.mouse_click()
@@ -43,6 +42,16 @@ def city():
     city_chest = utytilities.wait_until_found("city_chest.png", confidence=0.9)
     utytilities.move_mouse(city_chest.x, city_chest.y)
     utytilities.mouse_click()
+    time.sleep(2)
+
+    pyautogui.keyDown('esc')
+    time.sleep(0.2)
+    pyautogui.keyUp('esc')
+
+    pyautogui.keyDown('tab')
+    time.sleep(0.2)
+    pyautogui.keyUp('tab')
+
     time.sleep(1)
 
 
@@ -68,10 +77,11 @@ def go_to_portal():
     utytilities.find_and_click("black_marsh_wp.png", confidence=0.9)
 
 
-
 count_run = utytilities.count_run
 count_run.wait_for_diablo_window()
-print("goifn to portal")
+
+#enter_game()
+city()
 go_to_portal()
 
 # enter_game()

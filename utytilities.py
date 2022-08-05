@@ -23,16 +23,15 @@ settings = {
         window_title_height=38
     ),
     "DESKTOP-N349C6N": Settings(
-        images_folder = "images/shlombif/",
-        wp_mirror_pixel_distance = 17,
-        window_title_height = 0,
+        images_folder="images/shlombif/",
+        wp_mirror_pixel_distance=17,
+        window_title_height=0,
     ),
 }[computer_name]
 
 COUNTESS_NAMES = ["countess", "count", "county", "countnum", "countrun"]
 COUNTESS_MIN_RUNS = 10
 COUNTESS_MAX_RUNS = 20
-
 
 SCREEN_SIZE_X, SCREEN_SIZE_Y = pyautogui.size()
 ARRIVAL_DISTANCE = 10
