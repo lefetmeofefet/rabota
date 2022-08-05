@@ -7,11 +7,13 @@ COUNTESS_NAMES = ["countess", "count", "county", "countnum", "countrun"]
 COUNTESS_MIN_RUNS = 10
 COUNTESS_MAX_RUNS = 20
 
+
 class count_run:
     count_num = 1
     count_name = 0
 
-def create_run_name():
+
+def get_game_name():
     count_num = count_run.count_num
     count_name = COUNTESS_NAMES[count_run.count_name]
     run_name = count_name + str(count_num)
@@ -32,11 +34,11 @@ def create_run_name():
     return run_name
 
 
-#waits until finds the picture and returns cords
-def wait_until_found(name):
+# waits until finds the picture and returns cords
+def wait_until_found(name, confidence=1):
     image_name = None
     while image_name is None:
-        image_name = pyautogui.locateCenterOnScreen(name, confidence=0.9)
+        image_name = pyautogui.locateCenterOnScreen(name, confidence)
         if image_name is not None:
             return image_name
         time.sleep(0.5)
@@ -74,10 +76,22 @@ def mouse_click(is_right_click=False):
 
 
 def distance(x1, y1, x2, y2):
-    return math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2))
+    return math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2))
 
 
-SCREEN_SIZE_X, SCREEN_SIZE_Y = pyautogui.size()
+def wait_for_create_game_menu():
+    window = []
+    while len(window) == 0 or not window[0].isActive:
+        window = pyautogui.getWindowsWithTitle('Diablo II: Resurrected')
+        time.sleep(0.5)
+    return window[0]
+
+
+window = wait_for_create_game_menu()
+
+# SCREEN_SIZE_X, SCREEN_SIZE_Y = pyautogui.size()
+SCREEN_SIZE_X = window.width
+SCREEN_SIZE_Y = window.height
 ARRIVAL_DISTANCE = 10
 ANGLE_MAX_ERROR = 0.4
 ANGLE_OVERALL_CURVE = 0.15
@@ -90,11 +104,11 @@ MOUSE_SPEED_MIN = SCREEN_SIZE_X * 0.00125
 def move_mouse(destination_x, destination_y):
     mouse_speed_min = MOUSE_SPEED_RANDOM_MIN
     mouse_speed_max = MOUSE_SPEED_RANDOM_MAX
-    x_start,y_start = pyautogui.position()  # current position
+    x_start, y_start = pyautogui.position()  # current position
     x, y = pyautogui.position()  # current position
     angle_curve = ANGLE_OVERALL_CURVE * (1 if random.random() > 0.5 else -1)
     while x != destination_x and y != destination_y:
-        angle = math.atan2(destination_x - x, destination_y - y) # angle randomizing:
+        angle = math.atan2(destination_x - x, destination_y - y)  # angle randomizing:
         angle_random = random_range(-ANGLE_MAX_ERROR, ANGLE_MAX_ERROR)
         angle += angle_random + angle_curve
 
@@ -105,13 +119,14 @@ def move_mouse(destination_x, destination_y):
             else:
                 mouse_speed_min -= MOUSE_SPEED_ACCELERATION
                 mouse_speed_max -= MOUSE_SPEED_ACCELERATION
-        mouse_move = random_range(mouse_speed_min, mouse_speed_max) # movement randomizing:
+        mouse_move = random_range(mouse_speed_min, mouse_speed_max)  # movement randomizing:
 
         x += int(math.sin(angle) * mouse_move)
         y += int(math.cos(angle) * mouse_move)
-        pyautogui.moveTo(x, y, _pause=False) # moves with angle to Destination
+        pyautogui.moveTo(x, y, _pause=False)  # moves with angle to Destination
 
-        if abs(destination_x - x) < ARRIVAL_DISTANCE and abs(destination_y - y) < ARRIVAL_DISTANCE:  # jumps to the end when close:
+        if abs(destination_x - x) < ARRIVAL_DISTANCE and abs(
+                destination_y - y) < ARRIVAL_DISTANCE:  # jumps to the end when close:
             pyautogui.moveTo(destination_x, destination_y)
             x = destination_x
             y = destination_y
