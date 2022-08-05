@@ -137,6 +137,10 @@ def mouse_up(is_right_click=False):
     pyautogui.mouseUp(_pause=False, button=pyautogui.SECONDARY if is_right_click else pyautogui.PRIMARY)
 
 
+def sleep(sleepy_time, random_min=0.05, random_max=0.15):
+    time.sleep(sleepy_time + random_range(random_min, random_max))
+
+
 def distance(x1, y1, x2, y2):
     return math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2))
 

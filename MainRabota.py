@@ -14,7 +14,7 @@ def enter_game():
     while not create_window:
         create_button_unpressed = utytilities.wait_until_found("create_unpressed.png", confidence=0.9)
         utytilities.move_mouse(create_button_unpressed.x, create_button_unpressed.y)
-        time.sleep(0.2)
+        utytilities.sleep(0.2)
         utytilities.mouse_click()
         create_window = True
 
@@ -39,36 +39,32 @@ def city():
     utytilities.wait_until_found("new_graphic_barrel.png", confidence=0.9)
     utytilities.write_text('g')  # old graphics
 
-    utytilities.write_text('z')
-    time.sleep(0.2)
-    utytilities.mouse_click(is_right_click=True)
-    time.sleep(0.2)
-    utytilities.write_text('x')
-    time.sleep(0.2)
-    utytilities.mouse_click(is_right_click=True)
-    time.sleep(0.2)
-    utytilities.write_text('e')
+    cast_skills()
 
     city_chest = utytilities.wait_until_found("city_chest.png", confidence=0.9)
     utytilities.move_mouse(city_chest.x, city_chest.y)
     utytilities.mouse_click()
-    time.sleep(2)
+    utytilities.sleep(3)
 
     pyautogui.keyDown('esc')
-    time.sleep(0.2)
+    utytilities.sleep(0.2)
     pyautogui.keyUp('esc')
-    time.sleep(0.2)
+    utytilities.sleep(0.2)
     pyautogui.keyDown('tab')
-    time.sleep(0.2)
+    utytilities.sleep(0.2)
     pyautogui.keyUp('tab')
 
 
-
-# for i in range(100):
-#     print(utytilities.create_run_name())
-
-# tower_entrance = pyautogui.locateCenterOnScreen("tower_entrance.png", confidence = 0.9)
-# utytilities.move_mouse(tower_entrance.x, tower_entrance.y)
+def cast_skills():
+    utytilities.write_text('z')
+    utytilities.sleep(0.2)
+    utytilities.mouse_click(is_right_click=True)
+    utytilities.sleep(0.2)
+    utytilities.write_text('x')
+    utytilities.sleep(0.2)
+    utytilities.mouse_click(is_right_click=True)
+    utytilities.sleep(0.2)
+    utytilities.write_text('e')
 
 def go_to_portal():
     wp_minimap = utytilities.find_wp_on_minimap()
@@ -78,31 +74,31 @@ def go_to_portal():
     # centery = count_run.window.top + (count_run.window.height - count_run.toolbar_height) / 2 + count_run.toolbar_height
     utytilities.move_mouse(wp_minimap.x, wp_minimap.y)
     utytilities.mouse_down()
-    time.sleep(2 + random.random() * 0.1)
+    utytilities.sleep(2)
     utytilities.mouse_up()
-    time.sleep(1 + random.random() * 0.1)  # Important cause he keeps running a bit after the mouse is release
+    utytilities.sleep(1)  # Important cause he keeps running a bit after the mouse is release
 
     pyautogui.keyDown('tab')
-    time.sleep(0.2)
+    utytilities.sleep(0.2)
     pyautogui.keyUp('tab')
 
     utytilities.find_and_click("wp.png", confidence=0.9)
-    time.sleep(0.5 + random.random() * 0.1)
+    utytilities.sleep(0.5)
     utytilities.find_and_click("black_marsh_wp.png", confidence=0.9)
 
     pyautogui.keyDown('tab')
-    time.sleep(0.2)
+    utytilities.sleep(0.2)
     pyautogui.keyUp('tab')
 
 def exit_game():
     pyautogui.keyDown('esc')
-    time.sleep(0.2)
+    utytilities.sleep(0.2)
     pyautogui.keyUp('esc')
-    time.sleep(0.2)
+    utytilities.sleep(0.2)
     pyautogui.keyDown('enter')
-    time.sleep(0.2)
+    utytilities.sleep(0.2)
     pyautogui.keyUp('enter')
-    time.sleep(0.2)
+    utytilities.sleep(0.2)
 
 count_run = utytilities.count_run
 count_run.wait_for_diablo_window()
