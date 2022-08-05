@@ -52,16 +52,16 @@ def city():
     city_chest = utytilities.wait_until_found("city_chest.png", confidence=0.9)
     utytilities.move_mouse(city_chest.x, city_chest.y)
     utytilities.mouse_click()
+    time.sleep(2)
 
     pyautogui.keyDown('esc')
     time.sleep(0.2)
     pyautogui.keyUp('esc')
-
+    time.sleep(0.2)
     pyautogui.keyDown('tab')
     time.sleep(0.2)
     pyautogui.keyUp('tab')
 
-    time.sleep(1)
 
 
 # for i in range(100):
@@ -94,13 +94,25 @@ def go_to_portal():
     time.sleep(0.2)
     pyautogui.keyUp('tab')
 
+def exit_game():
+    pyautogui.keyDown('esc')
+    time.sleep(0.2)
+    pyautogui.keyUp('esc')
+    time.sleep(0.2)
+    pyautogui.keyDown('enter')
+    time.sleep(0.2)
+    pyautogui.keyUp('enter')
+    time.sleep(0.2)
 
 count_run = utytilities.count_run
 count_run.wait_for_diablo_window()
 
-enter_game()
-city()
-go_to_portal()
+for i in range(4):
+    enter_game()
+    city()
+    go_to_portal()
+    exit_game()
+
 
 # enter_game()
 # city()
