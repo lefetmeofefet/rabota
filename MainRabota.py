@@ -85,6 +85,7 @@ def go_to_portal():
     utytilities.find_and_click("wp.png", confidence=0.9)
     utytilities.sleep(0.5)
     utytilities.find_and_click("black_marsh_wp.png", confidence=0.9)
+    utytilities.sleep(5)
 
     pyautogui.keyDown('tab')
     utytilities.sleep(0.2)
@@ -94,7 +95,7 @@ def exit_game():
     pyautogui.keyDown('esc')
     utytilities.sleep(0.2)
     pyautogui.keyUp('esc')
-    utytilities.sleep(0.2)
+    utytilities.sleep(0.4)
     pyautogui.keyDown('enter')
     utytilities.sleep(0.2)
     pyautogui.keyUp('enter')
@@ -109,9 +110,5 @@ for i in range(4):
     go_to_portal()
     exit_game()
 
-
-# enter_game()
-# city()
-
-# charsi_name = utytilities.wait_until_found("charsi_name.png", confidence = 0.8)
-# utytilities.mouse_click()
+# tower_entrance = pyautogui.locateCenterOnScreen("tower_entrance.png", confidence = 0.9)
+# utytilities.move_mouse(tower_entrance.x, tower_entrance.y)
