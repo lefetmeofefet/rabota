@@ -82,13 +82,13 @@ class CountRun:
 count_run = CountRun()
 
 
-def wait_until_found(image_name, confidence=1):
-    image = None
-    while image is None:
+def wait_until_found(image_name, confidence=1, time_wait=4):
+    for i in range(time_wait * 2):
         image = pyautogui.locateCenterOnScreen(settings.images_folder + image_name, confidence=confidence)
         if image is not None:
             return image
         time.sleep(0.5)
+    return None
 
 
 def find_and_click(image_name, confidence=1):
