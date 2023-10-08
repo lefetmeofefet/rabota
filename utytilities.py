@@ -2,6 +2,7 @@ import time
 import math
 import random
 import pyautogui
+import cv2
 
 import socket
 
@@ -22,14 +23,14 @@ settings = {
         wp_mirror_pixel_distance=9,
         window_title_height=38
     ),
-    "DESKTOP-N349C6N": Settings(
+    "HACKT": Settings(
         images_folder="images/shlombif/",
         wp_mirror_pixel_distance=17,
         window_title_height=0,
     ),
 }[computer_name]
 
-COUNTESS_NAMES = ["countess", "count", "county", "countnum", "countrun"]
+COUNTESS_NAMES = ["countess", "count", "county", "countnum", "countrun", "keyss", "lefet"]
 COUNTESS_MIN_RUNS = 10
 COUNTESS_MAX_RUNS = 20
 
@@ -45,7 +46,7 @@ MOUSE_SPEED_MIN = SCREEN_SIZE_X * 0.00125
 
 class CountRun:
     count_num = 1
-    count_name = 0
+    count_name = 2
     toolbar_height = settings.window_title_height
 
     def __init__(self):
@@ -111,6 +112,13 @@ def backspace(num):
         time.sleep(random_range(0.05, 0.2))
         pyautogui.keyUp('backspace', _pause=False)
         time.sleep(random_range(0.05, 0.2))
+
+
+def show_items():
+    pyautogui.keyDown('alt', _pause=False)
+    time.sleep(random_range(0.05, 0.2))
+    pyautogui.keyUp('alt', _pause=False)
+    time.sleep(random_range(0.05, 0.2))
 
 
 def write_text(text):
