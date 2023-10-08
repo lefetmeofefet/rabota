@@ -82,20 +82,49 @@ class CountRun:
 count_run = CountRun()
 
 
-def wait_until_found(image_name, confidence=1):
+def convert_minimap_coordinates_to_game(point, should_limit_to_window=False):
+    my_location = count_run.window.center
+    minimap_distance_multiplier = 8  # Approx lol
+    game_coordinates = Point(
+        my_location.x + (point.x - my_location.x) * minimap_distance_multiplier,
+        my_location.y + (point.y - my_location.y) * minimap_distance_multiplier
+    )
+
+    # Limit teleport destination so it won't be out of the diablo window
+    if should_limit_to_window:
+        max_radius = count_run.window.height * 0.4  # Tweak this maybe
+        diffx = (game_coordinates.x - my_location.x)
+        diffy = (game_coordinates.y - my_location.y)
+        if diffx * diffx + diffy * diffy > max_radius * max_radius:
+            angle = math.atan2(diffy, diffx)
+            game_coordinates = Point(
+                my_location.x + max_radius * math.cos(angle),
+                my_location.y + max_radius * math.sin(angle)
+            )
+    return game_coordinates
+
+
+def wait_until_found(image_name, confidence=1, timeout_seconds=None, check_interval=0.5):
+    print(f"Looking for {image_name}")
     image = None
-    while image is None:
+    total_seconds = 0
+    while image is None and (timeout_seconds is None or total_seconds < timeout_seconds):
         image = pyautogui.locateCenterOnScreen(settings.images_folder + image_name, confidence=confidence)
         if image is not None:
+            print(f"Found {image_name} at {image}")
             return image
-        time.sleep(0.5)
+        time.sleep(check_interval)
+        total_seconds += check_interval
 
 
-def find_and_click(image_name, confidence=1):
-    wp = wait_until_found(image_name, confidence)
+def find_and_click(image_name, confidence=1, timeout_seconds=None, check_interval=0.5):
+    wp = wait_until_found(image_name, confidence, timeout_seconds, check_interval)
+    if wp is None:
+        return
     move_mouse(wp.x, wp.y)
     time.sleep(0.2 + random.random() * 0.1)
     mouse_click()
+    return True
 
 
 def random_range(minimum, maximum):

@@ -1,3 +1,4 @@
+import math
 import random
 
 import utytilities
@@ -66,29 +67,60 @@ def cast_skills():
     utytilities.sleep(0.2)
     utytilities.write_text('e')
 
-def go_to_portal():
-    wp_minimap = utytilities.find_wp_on_minimap()
+
+def walk_to_portal(walk_duration=2.0):
+    utytilities.sleep(0.1)
+    utytilities.write_text('g')
+    utytilities.sleep(0.2)
+    wp_minimap = utytilities.wait_until_found("wp_minimap.png", confidence=0.9)
+    # wp_minimap = utytilities.find_wp_on_minimap()
     if wp_minimap is None:
         raise Exception("Shet no wp now we die")
     # centerx = count_run.window.left + count_run.window.width / 2
     # centery = count_run.window.top + (count_run.window.height - count_run.toolbar_height) / 2 + count_run.toolbar_height
     utytilities.move_mouse(wp_minimap.x, wp_minimap.y)
     utytilities.mouse_down()
-    utytilities.sleep(2)
+    utytilities.sleep(walk_duration)
     utytilities.mouse_up()
     utytilities.sleep(1)  # Important cause he keeps running a bit after the mouse is release
 
+    utytilities.sleep(0.1)
+    utytilities.write_text('g')
+    utytilities.sleep(0.2)
+
+
+def go_to_portal_and_enter_black_marsh():
+    walk_to_portal()
+
     pyautogui.keyDown('tab')
     utytilities.sleep(0.2)
     pyautogui.keyUp('tab')
 
-    utytilities.find_and_click("wp.png", confidence=0.9)
+    found_wp = utytilities.find_and_click("wp.png", confidence=0.7, timeout_seconds=4)
+    if not found_wp:
+        walk_to_portal(0.3)
+        utytilities.find_and_click("wp.png", confidence=0.7, timeout_seconds=4)
     utytilities.sleep(0.5)
     utytilities.find_and_click("black_marsh_wp.png", confidence=0.9)
-
+    utytilities.sleep(3)
     pyautogui.keyDown('tab')
     utytilities.sleep(0.2)
     pyautogui.keyUp('tab')
+
+
+def find_tower_entrance_and_enter():
+    entered_tower = False
+    while not entered_tower:
+        tower_entrance_minimap = utytilities.wait_until_found("tower_entrance_minimap.png", confidence=0.9)
+        tower_entrance = utytilities.convert_minimap_coordinates_to_game(tower_entrance_minimap, True)
+
+        utytilities.move_mouse(tower_entrance.x, tower_entrance.y)
+        utytilities.sleep(0.2)
+        utytilities.mouse_click(is_right_click=True)
+        utytilities.sleep(0.4)
+
+        entered_tower = utytilities.find_and_click("to_the_forgotten_tower.png", confidence=0.7, timeout_seconds=0.3)
+
 
 def exit_game():
     pyautogui.keyDown('esc')
@@ -103,12 +135,13 @@ def exit_game():
 count_run = utytilities.count_run
 count_run.wait_for_diablo_window()
 
-for i in range(4):
-    enter_game()
-    city()
-    go_to_portal()
-    exit_game()
+# for i in range(4):
+#     enter_game()
+#     city()
+#     go_to_portal_and_enter_black_marsh()
+#     exit_game()
 
+find_tower_entrance_and_enter()
 
 # enter_game()
 # city()
