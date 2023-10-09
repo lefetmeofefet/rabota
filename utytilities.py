@@ -88,9 +88,10 @@ count_run = CountRun()
 def convert_minimap_coordinates_to_game(point, should_limit_to_window=False):
     my_location = count_run.window.center
     minimap_distance_multiplier = 8  # Approx lol
+    half_character_height = count_run.window.height * 0
     game_coordinates = Point(
         my_location.x + (point.x - my_location.x) * minimap_distance_multiplier,
-        my_location.y + (point.y - my_location.y) * minimap_distance_multiplier
+        my_location.y + (point.y - my_location.y) * minimap_distance_multiplier - half_character_height
     )
 
     # Limit teleport destination so it won't be out of the diablo window
@@ -145,25 +146,27 @@ def check_life():
 
 def wait_until_found(image_name, confidence=1, timeout_seconds=None, check_interval=0.5):
     print(f"Looking for {image_name}")
-    image = None
     total_seconds = 0
-    while image is None and (timeout_seconds is None or total_seconds < timeout_seconds):
-        image = pyautogui.locateCenterOnScreen(settings.images_folder + image_name, confidence=confidence)
-        if image is not None:
-            print(f"Found {image_name} at {image}")
-            return image
+    while timeout_seconds is None or total_seconds < timeout_seconds or timeout_seconds == 0:
+        location = pyautogui.locateCenterOnScreen(settings.images_folder + image_name, confidence=confidence)
+        if location is not None:
+            print(f"Found {image_name} at {location}")
+            return location
+        if timeout_seconds == 0:
+            break
         time.sleep(check_interval)
         total_seconds += check_interval
+    print(f"Didn't find {image_name}")
 
 
 def find_and_click(image_name, confidence=1, timeout_seconds=None, check_interval=0.5):
     if timeout_seconds == 0:
-        wp = pyautogui.locateCenterOnScreen(settings.images_folder + image_name, confidence=confidence)
+        location = pyautogui.locateCenterOnScreen(settings.images_folder + image_name, confidence=confidence)
     else:
-        wp = wait_until_found(image_name, confidence, timeout_seconds, check_interval)
-    if wp is None:
+        location = wait_until_found(image_name, confidence, timeout_seconds, check_interval)
+    if location is None:
         return
-    move_mouse(wp.x, wp.y)
+    move_mouse(location.x, location.y)
     time.sleep(0.2 + random.random() * 0.1)
     mouse_click()
     return True
@@ -200,7 +203,9 @@ def write_text(text):
         time.sleep(time_to_sleep * time_to_sleep)
 
 
-def mouse_click(is_right_click=False):
+def mouse_click(location=None, is_right_click=False):
+    if location is not None:
+        move_mouse(location.x, location.y)
     time_to_sleep = random_range(0.05, 0.2)
     pyautogui.mouseDown(_pause=False, button=pyautogui.SECONDARY if is_right_click else pyautogui.PRIMARY)
     time.sleep(time_to_sleep)

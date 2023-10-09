@@ -120,15 +120,32 @@ def find_tower_entrance_and_enter():
             return False
         tower_entrance = utytilities.convert_minimap_coordinates_to_game(tower_entrance_minimap, True)
 
-        utytilities.move_mouse(tower_entrance.x, tower_entrance.y)
+        teleport(tower_entrance)
         utytilities.sleep(0.2)
-        utytilities.mouse_click(is_right_click=True)
-        utytilities.sleep(0.4)
 
         entered_tower = utytilities.find_and_click("to_the_forgotten_tower.png", confidence=0.7, timeout_seconds=0)
         # TODO: Make sure we inside, if not, keep teleporting into the entrance again because we might be stuck
         if entered_tower:
             return True
+
+
+def find_tower_next_level_entrance_and_enter(teleport_once=False):
+    next_level_entrance_minimap = utytilities.wait_until_found("tower_next_level_entrance.png", confidence=0.9, timeout_seconds=0)
+    if next_level_entrance_minimap is None:
+        return
+
+    next_level_entrance = utytilities.convert_minimap_coordinates_to_game(next_level_entrance_minimap)
+    if teleport_once:
+        teleport(next_level_entrance)
+        utytilities.sleep(0.2)
+    utytilities.mouse_click(next_level_entrance)
+    return True
+
+
+def teleport(location, should_swap_skill=False):
+    if should_swap_skill:
+        utytilities.write_text("e")
+    utytilities.mouse_click(location, is_right_click=True)
 
 
 def check_for_runes():
@@ -162,10 +179,8 @@ count_run.wait_for_diablo_window()
 #
 # find_tower_entrance_and_enter()
 while True:
-    if not utytilities.check_life():
-        exit_game()
-        break
-    pyautogui.sleep(0.1)
+    find_tower_next_level_entrance_and_enter()
+    pyautogui.sleep(1)
 
 # checks what pixels hp is at:
 
