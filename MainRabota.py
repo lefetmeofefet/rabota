@@ -26,7 +26,7 @@ def enter_game():
     utytilities.write_text(utytilities.count_run.generate_game_name())
 
     # Password, comment this if you dont want it
-    password = utytilities.wait_until_found("password.png", confidence=0.9, time_wait=4)
+    password = utytilities.wait_until_found("password.png", confidence=0.9)
     utytilities.move_mouse(password.x + utytilities.random_range(-2, 6),
                            password.y + 25 * utytilities.MOUSE_SPEED_ACCELERATION)
     utytilities.mouse_click()
@@ -130,14 +130,12 @@ def check_for_runes():
     """ check for runes on the ground and picks them up
     """
     utytilities.show_items()
-    rune = utytilities.wait_until_found("rune1.png", confidence=0.8, time_wait=2)
+    rune = utytilities.wait_until_found("rune1.png", confidence=0.8)
     while rune is not None:
-        print(rune.x)
-        print(rune.y)
         utytilities.move_mouse(rune.x, rune.y)
         utytilities.mouse_click()
         utytilities.sleep(0.5)
-        rune = utytilities.wait_until_found("rune1.png", confidence=0.8, time_wait=2)
+        rune = utytilities.wait_until_found("rune1.png", confidence=0.8)
 
 
 def exit_game():
@@ -155,9 +153,9 @@ count_run = utytilities.count_run
 count_run.wait_for_diablo_window()
 
 # for i in range(4):
-#     enter_game()
-#     city()
-#     go_to_portal_and_enter_black_marsh()
+enter_game()
+city()
+go_to_portal_and_enter_black_marsh()
 #     exit_game()
 
 find_tower_entrance_and_enter()
