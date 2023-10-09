@@ -113,9 +113,11 @@ def go_to_portal_and_enter_black_marsh():
 
 
 def find_tower_entrance_and_enter():
-    entered_tower = False
-    while not entered_tower:
-        tower_entrance_minimap = utytilities.wait_until_found("tower_entrance_minimap.png", confidence=0.9)
+    while True:
+        tower_entrance_minimap = pyautogui.locateCenterOnScreen(
+            utytilities.settings.images_folder + "tower_entrance_minimap.png", confidence=0.9)
+        if tower_entrance_minimap is None:
+            return False
         tower_entrance = utytilities.convert_minimap_coordinates_to_game(tower_entrance_minimap, True)
 
         utytilities.move_mouse(tower_entrance.x, tower_entrance.y)
@@ -123,7 +125,10 @@ def find_tower_entrance_and_enter():
         utytilities.mouse_click(is_right_click=True)
         utytilities.sleep(0.4)
 
-        entered_tower = utytilities.find_and_click("to_the_forgotten_tower.png", confidence=0.7, timeout_seconds=0.3)
+        entered_tower = utytilities.find_and_click("to_the_forgotten_tower.png", confidence=0.7, timeout_seconds=0)
+        # TODO: Make sure we inside, if not, keep teleporting into the entrance again because we might be stuck
+        if entered_tower:
+            return True
 
 
 def check_for_runes():

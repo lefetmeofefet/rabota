@@ -157,7 +157,10 @@ def wait_until_found(image_name, confidence=1, timeout_seconds=None, check_inter
 
 
 def find_and_click(image_name, confidence=1, timeout_seconds=None, check_interval=0.5):
-    wp = wait_until_found(image_name, confidence, timeout_seconds, check_interval)
+    if timeout_seconds == 0:
+        wp = pyautogui.locateCenterOnScreen(settings.images_folder + image_name, confidence=confidence)
+    else:
+        wp = wait_until_found(image_name, confidence, timeout_seconds, check_interval)
     if wp is None:
         return
     move_mouse(wp.x, wp.y)
