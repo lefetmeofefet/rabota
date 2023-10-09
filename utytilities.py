@@ -22,14 +22,14 @@ settings = {
         wp_mirror_pixel_distance=9,
         window_title_height=38
     ),
-    "DESKTOP-N349C6N": Settings(
+    "HACKT": Settings(
         images_folder="images/shlombif/",
         wp_mirror_pixel_distance=17,
         window_title_height=0,
     ),
 }[computer_name]
 
-COUNTESS_NAMES = ["countess", "count", "county", "countnum", "countrun"]
+COUNTESS_NAMES = ["countess", "count", "county", "countnum", "countrun", "keyss", "lefet"]
 COUNTESS_MIN_RUNS = 10
 COUNTESS_MAX_RUNS = 20
 
@@ -140,6 +140,13 @@ def backspace(num):
         time.sleep(random_range(0.05, 0.2))
         pyautogui.keyUp('backspace', _pause=False)
         time.sleep(random_range(0.05, 0.2))
+
+
+def show_items():
+    pyautogui.keyDown('alt', _pause=False)
+    time.sleep(random_range(0.05, 0.2))
+    pyautogui.keyUp('alt', _pause=False)
+    time.sleep(random_range(0.05, 0.2))
 
 
 def write_text(text):
