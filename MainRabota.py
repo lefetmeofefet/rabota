@@ -142,8 +142,7 @@ def exit_game():
     pyautogui.keyDown('esc')
     pyautogui.sleep(0.01)
     pyautogui.keyUp('esc')
-    # pyautogui.sleep(0.01)
-    utytilities.move_mouse(utytilities.SCREEN_SIZE_X / 2, utytilities.SCREEN_SIZE_Y / 2.2)
+    utytilities.move_mouse(utytilities.SCREEN_SIZE_X / 2, utytilities.SCREEN_SIZE_Y / 2.3)
     utytilities.mouse_click()
 
 
@@ -163,10 +162,8 @@ while True:
         break
     pyautogui.sleep(0.1)
 
-# # checks what pixels hp is at:
-# for i in range(50):
-#     utytilities.check_life()
-#     utytilities.sleep(2)
+# checks what pixels hp is at:
+
 
 # check_for_runes()
 

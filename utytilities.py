@@ -22,7 +22,7 @@ settings = {
         images_folder="images/darvid/",
         wp_mirror_pixel_distance=9,
         window_title_height=38,
-        life_pixels=[(x, 1320) for x in range(600, 661)]  # TODO - Davit change to yours
+        life_pixels=[(x, 847) for x in range(570, 630)]
     ),
     "HACKT": Settings(
         images_folder="images/shlombif/",
@@ -129,9 +129,6 @@ def is_shade_of_red_or_green(color):
 
 
 def check_life():
-    # to check what pixels it is
-    # mouse_pos = pyautogui.position()
-    # print(mouse_pos.x, mouse_pos.y)
     sum_red = 0
     sum_green = 0
     sum_blue = 0
@@ -143,7 +140,6 @@ def check_life():
         # print(pixel_color)
     length = len(settings.life_pixels)
     color = (sum_red / length, sum_green / length, sum_blue / length)
-    print("lalala", color)
     return is_shade_of_red_or_green(color)
 
 
