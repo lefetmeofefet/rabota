@@ -2,7 +2,7 @@
 from PIL import Image, ImageFilter
 
 #Open existing image
-OriImage = Image.open('../shlombif/test.png')
+OriImage = Image.open('test.png')
 # OriImage.show()
 
 OriImage = OriImage.filter(ImageFilter.BLUR)

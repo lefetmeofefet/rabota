@@ -130,12 +130,12 @@ def check_for_runes():
     """ check for runes on the ground and picks them up
     """
     utytilities.show_items()
-    rune = utytilities.wait_until_found("rune1.png", confidence=0.8)
+    rune = utytilities.wait_until_found("rune.png", confidence=0.8)
     while rune is not None:
         utytilities.move_mouse(rune.x, rune.y)
         utytilities.mouse_click()
         utytilities.sleep(0.5)
-        rune = utytilities.wait_until_found("rune1.png", confidence=0.8)
+        rune = utytilities.wait_until_found("rune.png", confidence=0.8)
 
 
 def exit_game():
@@ -168,5 +168,3 @@ find_tower_entrance_and_enter()
 
 # check_for_runes()
 
-# tower_entrance = pyautogui.locateCenterOnScreen("tower_entrance.png", confidence = 0.9)
-# utytilities.move_mouse(tower_entrance.x, tower_entrance.y)

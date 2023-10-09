@@ -53,7 +53,7 @@ import cv2
 import numpy as np
 
 # Read image
-image = Image.open("../shlombif/test.png")
+image = Image.open("test.png")
 
 for _ in range(3):
 # for _ in range(15):
