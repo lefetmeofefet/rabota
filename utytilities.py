@@ -85,6 +85,12 @@ class CountRun:
 count_run = CountRun()
 
 
+def calculate_new_coordinates(x, y, angle_rad, distance):
+    new_x = x + distance * math.cos(angle_rad)
+    new_y = y + distance * math.sin(angle_rad)
+    return new_x, new_y
+
+
 def convert_minimap_coordinates_to_game(point, should_limit_to_window=False):
     my_location = count_run.window.center
     minimap_distance_multiplier = 8  # Approx lol
@@ -129,11 +135,12 @@ def is_shade_of_red_or_green(color):
 
 
 def check_life():
+    screenshot = pyautogui.screenshot()
     sum_red = 0
     sum_green = 0
     sum_blue = 0
     for life_pixel in settings.life_pixels:
-        pixel_color = pyautogui.pixel(life_pixel[0], life_pixel[1])
+        pixel_color = screenshot.getpixel(life_pixel)
         sum_red += pixel_color[0]
         sum_green += pixel_color[1]
         sum_blue += pixel_color[2]
@@ -145,26 +152,28 @@ def check_life():
 
 def wait_until_found(image_name, confidence=1, timeout_seconds=None, check_interval=0.5):
     print(f"Looking for {image_name}")
-    image = None
     total_seconds = 0
-    while image is None and (timeout_seconds is None or total_seconds < timeout_seconds):
-        image = pyautogui.locateCenterOnScreen(settings.images_folder + image_name, confidence=confidence)
-        if image is not None:
-            print(f"Found {image_name} at {image}")
-            return image
+    while timeout_seconds is None or total_seconds < timeout_seconds or timeout_seconds == 0:
+        location = pyautogui.locateCenterOnScreen(settings.images_folder + image_name, confidence=confidence)
+        if location is not None:
+            print(f"Found {image_name} at {location}")
+            return location
+        if timeout_seconds == 0:
+            break
         time.sleep(check_interval)
         total_seconds += check_interval
+    print(f"Didn't find {image_name}")
 
 
 def find_and_click(image_name, confidence=1, timeout_seconds=None, check_interval=0.5):
     if timeout_seconds == 0:
-        wp = pyautogui.locateCenterOnScreen(settings.images_folder + image_name, confidence=confidence)
+        location = pyautogui.locateCenterOnScreen(settings.images_folder + image_name, confidence=confidence)
     else:
-        wp = wait_until_found(image_name, confidence, timeout_seconds, check_interval)
-    if wp is None:
+        location = wait_until_found(image_name, confidence, timeout_seconds, check_interval)
+    if location is None:
         return
-    move_mouse(wp.x, wp.y)
-    time.sleep(0.2 + random.random() * 0.1)
+    move_mouse(location.x, location.y)
+    sleep(0.1)
     mouse_click()
     return True
 
@@ -201,7 +210,7 @@ def write_text(text):
 
 
 def mouse_click(is_right_click=False):
-    time_to_sleep = random_range(0.05, 0.2)
+    time_to_sleep = random_range(0.01, 0.05)
     pyautogui.mouseDown(_pause=False, button=pyautogui.SECONDARY if is_right_click else pyautogui.PRIMARY)
     time.sleep(time_to_sleep)
     pyautogui.mouseUp(_pause=False, button=pyautogui.SECONDARY if is_right_click else pyautogui.PRIMARY)
@@ -253,7 +262,7 @@ def move_mouse(destination_x, destination_y):
             x = destination_x
             y = destination_y
 
-        mouse_pause = random_range(0.005, 0.02)
+        mouse_pause = random_range(0.005, 0.01)
         time.sleep(mouse_pause)
 
 
