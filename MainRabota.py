@@ -102,11 +102,17 @@ def go_to_portal_and_enter_black_marsh():
 
     found_wp = utytilities.find_and_click("wp.png", confidence=0.7, timeout_seconds=4)
     if not found_wp:
+        pyautogui.keyDown('tab')
+        utytilities.sleep(0.2)
+        pyautogui.keyUp('tab')
         walk_to_portal(0.3)
+        pyautogui.keyDown('tab')
+        utytilities.sleep(0.2)
+        pyautogui.keyUp('tab')
         utytilities.find_and_click("wp.png", confidence=0.7, timeout_seconds=4)
     utytilities.sleep(0.5)
     utytilities.find_and_click("black_marsh_wp.png", confidence=0.9, timeout_seconds=5)
-    utytilities.find_and_click("black_march_terror_wp.png", confidence=0.9, timeout_seconds=5)
+    utytilities.find_and_click("black_march_terror_wp.png", confidence=0.9, timeout_seconds=2)
     utytilities.sleep(3)
     pyautogui.keyDown('tab')
     utytilities.sleep(0.2)
@@ -131,6 +137,10 @@ def search_black_marsh():
         new_x, new_y = utytilities.calculate_new_coordinates(my_location.x, my_location.y, angle_rad, radius)
         utytilities.move_mouse(new_x, new_y)
         utytilities.mouse_click(is_right_click=True)
+        black_marsh = utytilities.wait_until_found("black_marsh.png", timeout_seconds=0,confidence=0.8)
+        if black_marsh is None:
+            exit_game()
+            break
         if find_tower_entrance_and_enter():
             break
         if not utytilities.check_life():
