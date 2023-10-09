@@ -1,37 +1,40 @@
-import time
 import math
 import random
-import pyautogui
-
 import socket
+import time
+
+import pyautogui
 
 computer_name = socket.gethostname()
 print(computer_name)
 
 
 class Settings:
-    def __init__(self, images_folder, wp_mirror_pixel_distance, window_title_height):
+    def __init__(self, images_folder, wp_mirror_pixel_distance, window_title_height, life_pixels):
         self.images_folder = images_folder
         self.wp_mirror_pixel_distance = wp_mirror_pixel_distance
         self.window_title_height = window_title_height
+        self.life_pixels = life_pixels
 
 
 settings = {
     "Rambo": Settings(
         images_folder="images/darvid/",
         wp_mirror_pixel_distance=9,
-        window_title_height=38
+        window_title_height=38,
+        life_pixels=[(x, 1320) for x in range(600, 661)]  # TODO - Davit change to yours
     ),
     "HACKT": Settings(
         images_folder="images/shlombif/",
         wp_mirror_pixel_distance=17,
         window_title_height=0,
+        life_pixels=[(x, 1320) for x in range(600, 661)]
     ),
 }[computer_name]
 
 COUNTESS_NAMES = ["countess", "count", "county", "countnum", "countrun", "keyss", "lefet"]
 COUNTESS_MIN_RUNS = 10
-COUNTESS_MAX_RUNS = 20
+COUNTESS_MAX_RUNS = 25
 
 SCREEN_SIZE_X, SCREEN_SIZE_Y = pyautogui.size()
 ARRIVAL_DISTANCE = 10
@@ -102,6 +105,46 @@ def convert_minimap_coordinates_to_game(point, should_limit_to_window=False):
                 my_location.y + max_radius * math.sin(angle)
             )
     return game_coordinates
+
+
+def is_shade_of_red_or_green(color):
+    # Define threshold values for red, green, and blue components
+    red_threshold_red = 80  # You can adjust this value based on your requirement
+    green_threshold_red = 10  # You can adjust this value based on your requirement
+    blue_threshold_red = 10  # You can adjust this value based on your requirement
+
+    red_threshold_green = 35  # You can adjust this value based on your requirement
+    green_threshold_green = 90  # You can adjust this value based on your requirement
+    blue_threshold_green = 10  # You can adjust this value based on your requirement
+
+    # Extract RGB components from the color tuple
+    red, green, blue = color
+
+    # Check if the color is a shade of red based on thresholds
+    if red > red_threshold_red and green < green_threshold_red and blue < blue_threshold_red or \
+            red < red_threshold_green and green > green_threshold_green and blue < blue_threshold_green:
+        return True
+    else:
+        return False
+
+
+def check_life():
+    # to check what pixels it is
+    # mouse_pos = pyautogui.position()
+    # print(mouse_pos.x, mouse_pos.y)
+    sum_red = 0
+    sum_green = 0
+    sum_blue = 0
+    for life_pixel in settings.life_pixels:
+        pixel_color = pyautogui.pixel(life_pixel[0], life_pixel[1])
+        sum_red += pixel_color[0]
+        sum_green += pixel_color[1]
+        sum_blue += pixel_color[2]
+        # print(pixel_color)
+    length = len(settings.life_pixels)
+    color = (sum_red / length, sum_green / length, sum_blue / length)
+    print("lalala", color)
+    return is_shade_of_red_or_green(color)
 
 
 def wait_until_found(image_name, confidence=1, timeout_seconds=None, check_interval=0.5):

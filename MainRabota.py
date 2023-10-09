@@ -140,31 +140,33 @@ def check_for_runes():
 
 def exit_game():
     pyautogui.keyDown('esc')
-    utytilities.sleep(0.2)
+    pyautogui.sleep(0.01)
     pyautogui.keyUp('esc')
-    utytilities.sleep(0.2)
-    pyautogui.keyDown('enter')
-    utytilities.sleep(0.2)
-    pyautogui.keyUp('enter')
-    utytilities.sleep(0.2)
+    # pyautogui.sleep(0.01)
+    utytilities.move_mouse(utytilities.SCREEN_SIZE_X / 2, utytilities.SCREEN_SIZE_Y / 2.2)
+    utytilities.mouse_click()
 
 
 count_run = utytilities.count_run
 count_run.wait_for_diablo_window()
 
 # for i in range(4):
-enter_game()
-city()
-go_to_portal_and_enter_black_marsh()
-#     exit_game()
-
-find_tower_entrance_and_enter()
-
 # enter_game()
 # city()
-# go_to_portal()
-# exit_game()
+# go_to_portal_and_enter_black_marsh()
+# #     exit_game()
+#
+# find_tower_entrance_and_enter()
+while True:
+    if not utytilities.check_life():
+        exit_game()
+        break
+    pyautogui.sleep(0.1)
 
+# # checks what pixels hp is at:
+# for i in range(50):
+#     utytilities.check_life()
+#     utytilities.sleep(2)
 
 # check_for_runes()
 
