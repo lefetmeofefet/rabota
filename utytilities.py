@@ -103,7 +103,7 @@ def convert_minimap_coordinates_to_game(point, should_limit_to_window=False):
 
     # Limit teleport destination so it won't be out of the diablo window
     if should_limit_to_window:
-        max_radius = count_run.window.height * 0.4  # Tweak this maybe
+        max_radius = count_run.window.height * 0.39  # Tweak this maybe
         diffx = (game_coordinates.x - my_location.x)
         diffy = (game_coordinates.y - my_location.y)
         if diffx * diffx + diffy * diffy > max_radius * max_radius:

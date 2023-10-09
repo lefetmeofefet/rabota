@@ -119,12 +119,12 @@ def go_to_portal_and_enter_black_marsh():
     pyautogui.keyUp('tab')
 
 
-def search_black_marsh():
+def search_black_marsh_and_enter_tower():
     currnet_angle = 0
     angle_added = 50
     angle_multiplier = 0.94
     my_location = utytilities.count_run.window.center
-    radius = count_run.window.height * 0.4
+    radius = count_run.window.height * 0.39
 
     utytilities.sleep(0.1)
     utytilities.write_text('g')
@@ -172,12 +172,15 @@ def find_tower_entrance_and_enter():
         if entered_tower and next_level_entrance_minimap is not None:
             utytilities.sleep(0.3)
             return True
+        if not utytilities.check_life():
+            exit_game()
+            break
 
 
 def find_tower_next_level_entrance_and_enter(teleport_once=False):
     next_level_entrance_minimap = utytilities.wait_until_found("tower_next_level_entrance.png", confidence=0.9, timeout_seconds=0)
     if next_level_entrance_minimap is None:
-        return
+        return False
 
     next_level_entrance = utytilities.convert_minimap_coordinates_to_game(next_level_entrance_minimap)
     if teleport_once:
@@ -220,17 +223,11 @@ count_run.wait_for_diablo_window()
 # enter_game()
 # city()
 # go_to_portal_and_enter_black_marsh()
-# search_black_marsh()
-# #     exit_game()
-#
+search_black_marsh_and_enter_tower()
 while True:
-    found = find_tower_entrance_and_enter()
-    if found:
-        while True:
-            find_tower_next_level_entrance_and_enter()
-            pyautogui.sleep(1)
-            1()()
-    pyautogui.sleep(1)
+    find_tower_next_level_entrance_and_enter()
+    utytilities.sleep(1)
+
 
 # checks what pixels hp is at:
 
