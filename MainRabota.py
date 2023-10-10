@@ -139,7 +139,7 @@ def search_black_marsh_and_enter_tower():
         utytilities.mouse_click(is_right_click=True)
         black_marsh = utytilities.wait_until_found("black_marsh.png", timeout_seconds=0,confidence=0.8)
         if black_marsh is None:
-            exit_game()
+            # exit_game()
             break
         if find_tower_entrance_and_enter():
             break
@@ -164,17 +164,40 @@ def find_tower_entrance_and_enter():
         teleport(tower_entrance)
         utytilities.sleep(0.3)
 
-        utytilities.move_mouse(utytilities.count_run.window.center.x, utytilities.count_run.window.center.y)
-        entered_tower = utytilities.find_and_click("to_the_forgotten_tower.png", confidence=0.7, timeout_seconds=0)
+        # Now we are supposedly standing near the entrance, we gotta move the mouse and find it
+        center = count_run.window.center
+        distance = count_run.window.height * 0.1
+        points_to_check = [
+            utytilities.Point(center.x + distance, center.y),
+            utytilities.Point(center.x - distance, center.y),
+            utytilities.Point(center.x, center.y + distance),
+            utytilities.Point(center.x, center.y - distance),
+        ]
+        entered_tower = False
+        for point_to_check in points_to_check:
+            utytilities.move_mouse(point_to_check.x, point_to_check.y)
+            entered_tower = utytilities.find_and_click("to_the_forgotten_tower.png", confidence=0.7, timeout_seconds=0)
+            if entered_tower:
+                break
+        if not entered_tower:
+            continue
+
+        # Now we're supposedly in the tower
         utytilities.sleep(0.5)
-        next_level_entrance_minimap = utytilities.wait_until_found("tower_next_level_entrance.png", confidence=0.9,
-                                                                   timeout_seconds=0)
-        if entered_tower and next_level_entrance_minimap is not None:
-            utytilities.sleep(0.3)
-            return True
-        if not utytilities.check_life():
-            exit_game()
-            break
+
+        # Now because of a bug that causes minimap to not show unless we move, we have to move. dumb
+        for _ in range(5):
+            utytilities.mouse_click(utytilities.Point(center.x, center.y + 20))
+            utytilities.sleep(0.4)
+
+            next_level_entrance_minimap = utytilities.wait_until_found("tower_next_level_entrance.png", confidence=0.9,
+                                                                       timeout_seconds=0)
+            if entered_tower and next_level_entrance_minimap is not None:
+                utytilities.sleep(0.3)
+                return True
+            if not utytilities.check_life():
+                exit_game()
+                break
 
 
 def find_tower_next_level_entrance_and_enter(teleport_once=False):
@@ -223,7 +246,7 @@ count_run.wait_for_diablo_window()
 # enter_game()
 # city()
 # go_to_portal_and_enter_black_marsh()
-search_black_marsh_and_enter_tower()
+# search_black_marsh_and_enter_tower()
 while True:
     find_tower_next_level_entrance_and_enter()
     utytilities.sleep(1)

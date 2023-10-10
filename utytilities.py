@@ -94,7 +94,7 @@ def calculate_new_coordinates(x, y, angle_rad, distance):
 def convert_minimap_coordinates_to_game(point, should_limit_to_window=False):
     my_location = count_run.window.center
     minimap_distance_multiplier = 10  # Approx lol
-    half_character_height = count_run.window.height * 0.05
+    half_character_height = count_run.window.height * 0.02
     left_offset = count_run.window.width * 0.03
     game_coordinates = Point(
         my_location.x + (point.x - my_location.x) * minimap_distance_multiplier - left_offset,
@@ -149,7 +149,10 @@ def check_life():
         # print(pixel_color)
     length = len(settings.life_pixels)
     color = (sum_red / length, sum_green / length, sum_blue / length)
-    return is_shade_of_red_or_green(color)
+    is_life_ok = is_shade_of_red_or_green(color)
+    if not is_life_ok:
+        print("Quitting because of low life.")
+    return is_life_ok
 
 
 def wait_until_found(image_name, confidence=1, timeout_seconds=None, check_interval=0.5):
@@ -173,7 +176,7 @@ def find_and_click(image_name, confidence=1, timeout_seconds=None, check_interva
     else:
         location = wait_until_found(image_name, confidence, timeout_seconds, check_interval)
     if location is None:
-        return
+        return False
     move_mouse(location.x, location.y)
     sleep(0.1)
     mouse_click()
