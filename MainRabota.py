@@ -57,6 +57,24 @@ def city():
     utytilities.sleep(0.2)
     pyautogui.keyUp('tab')
 
+    touch_akara()
+
+
+def touch_akara():
+    my_location = utytilities.count_run.window.center
+    utytilities.move_mouse(my_location.x + 100, my_location.y + 25)
+    utytilities.mouse_down()
+    utytilities.sleep(5)
+    utytilities.mouse_up()
+
+    utytilities.write_text('g')  # old graphics
+    akara = utytilities.wait_until_found("akara.png", confidence=0.8, timeout_seconds=4)
+    if akara is not None:
+        akara.y -= 20
+        akara_body = utytilities.convert_minimap_coordinates_to_game(akara)
+        utytilities.move_mouse(akara_body.x, akara_body.y)
+        utytilities.mouse_click()
+
 
 def cast_skills():
     utytilities.write_text('z')
@@ -221,12 +239,12 @@ count_run.wait_for_diablo_window()
 
 # for i in range(4):
 # enter_game()
-# city()
+city()
 # go_to_portal_and_enter_black_marsh()
-search_black_marsh_and_enter_tower()
-while True:
-    find_tower_next_level_entrance_and_enter()
-    utytilities.sleep(1)
+# search_black_marsh_and_enter_tower()
+# while True:
+#     find_tower_next_level_entrance_and_enter()
+#     utytilities.sleep(1)
 
 
 # checks what pixels hp is at:
