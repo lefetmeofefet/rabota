@@ -62,18 +62,17 @@ def city():
 
 def touch_akara():
     my_location = utytilities.count_run.window.center
-    utytilities.move_mouse(my_location.x + 100, my_location.y + 25)
+    utytilities.move_mouse(my_location.x + 150, my_location.y + 10)
     utytilities.mouse_down()
-    utytilities.sleep(5)
+    utytilities.sleep(4)
     utytilities.mouse_up()
 
     utytilities.write_text('g')  # old graphics
-    akara = utytilities.wait_until_found("akara.png", confidence=0.8, timeout_seconds=4)
+    akara = utytilities.wait_until_found("akara_minimap.png", confidence=0.8, timeout_seconds=4)
     if akara is not None:
-        akara.y -= 20
         akara_body = utytilities.convert_minimap_coordinates_to_game(akara)
-        utytilities.move_mouse(akara_body.x, akara_body.y)
-        utytilities.mouse_click()
+        # utytilities.move_mouse(akara_body.x, akara_body.y)
+        utytilities.find_with_mouse(akara_body, "akara.png")
 
 
 def cast_skills():
@@ -140,7 +139,7 @@ def go_to_portal_and_enter_black_marsh():
 def search_black_marsh_and_enter_tower():
     currnet_angle = 0
     angle_added = 50
-    angle_multiplier = 0.94
+    angle_multiplier = 0.95
     my_location = utytilities.count_run.window.center
     radius = count_run.window.height * 0.39
 
@@ -155,7 +154,7 @@ def search_black_marsh_and_enter_tower():
         new_x, new_y = utytilities.calculate_new_coordinates(my_location.x, my_location.y, angle_rad, radius)
         utytilities.move_mouse(new_x, new_y)
         utytilities.mouse_click(is_right_click=True)
-        black_marsh = utytilities.wait_until_found("black_marsh.png", timeout_seconds=0,confidence=0.8)
+        black_marsh = utytilities.wait_until_found("black_marsh.png", timeout_seconds=0, confidence=0.8)
         if black_marsh is None:
             # exit_game()
             break
@@ -168,7 +167,6 @@ def search_black_marsh_and_enter_tower():
         angle_added *= angle_multiplier
         if angle_added <= 10:
             angle_added = 10
-        # angle_multiplier *= 1.01
 
 
 def find_tower_entrance_and_enter():
@@ -262,7 +260,7 @@ count_run.wait_for_diablo_window()
 
 # for i in range(4):
 # enter_game()
-city()
+# city()
 # go_to_portal_and_enter_black_marsh()
 # search_black_marsh_and_enter_tower()
 # while True:
@@ -272,6 +270,11 @@ city()
 
 # checks what pixels hp is at:
 
+akara = utytilities.wait_until_found("akara_minimap.png", confidence=0.8, timeout_seconds=4)
+if akara is not None:
+    akara_body = utytilities.convert_minimap_coordinates_to_game(akara)
+    # utytilities.move_mouse(akara_body.x, akara_body.y)
+    utytilities.find_with_mouse(akara_body, "akara.png")
 
 # check_for_runes()
 

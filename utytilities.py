@@ -183,6 +183,25 @@ def find_and_click(image_name, confidence=1, timeout_seconds=None, check_interva
     return True
 
 
+def find_with_mouse(point, image_name):
+    grid_size = math.floor(count_run.window.height * 0.1)
+
+    # Maximum distance from the starting point
+    max_distance = 3 * grid_size
+
+    # Loop through rows
+    for i in range(-max_distance, max_distance + grid_size, grid_size):
+        # Loop through columns
+        for j in range(-max_distance, max_distance + grid_size, grid_size):
+            current_x, current_y = point.x + i, point.y + j
+            move_mouse(current_x, current_y)
+            image = wait_until_found(image_name, confidence=0.8, timeout_seconds=0)
+            if image is not None:
+                mouse_click()
+                return True
+    return False
+
+
 def random_range(minimum, maximum):
     num1 = random.random()
     num1 += minimum
